@@ -1,0 +1,18 @@
+`timescale 1ns / 1ps
+
+module wallacetree_6x6_tb;
+    reg [5:0] a, b;
+    wire [11:0] product;
+    wallacetree_6x6 uut (.a(a),.b(b),.product(product));
+    initial begin
+        $monitor("Time=%0t | a=%b (%0d), b=%b (%0d) -> product=%b (%0d)", 
+                 $time, a, a, b, b, product, product);
+        a = 6'b000001; b = 6'b000001; #10;  
+        a = 6'b000010; b = 6'b000010; #10;  
+        a = 6'b000111; b = 6'b001000; #10;  
+        a = 6'b000101; b = 6'b000110; #10;  
+        a = 6'b001010; b = 6'b001001; #10;  
+        a = 6'b111111; b = 6'b111111; #10;  
+        $finish;
+    end
+endmodule
