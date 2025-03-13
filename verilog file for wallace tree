@@ -1,0 +1,85 @@
+`timescale 1ns / 1ps
+
+module full_adder(a,b,cin,sum,cout);
+input a,b,cin;
+output reg sum,cout;
+always @(*)
+begin
+sum=a^b^cin;
+cout=(a&b)|(b&cin)|(cin&a);
+end
+endmodule
+
+module half_adder(a,b,sum,cout);
+input a,b;
+output reg sum,cout;
+always @(*)
+begin
+sum=a^b;
+cout=(a&b);
+end
+endmodule
+
+
+module wallacetree_6x6(a,b,product);
+input [5:0] a,b;
+output [11:0] product;
+
+wire a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30;
+wire a31,a32,a33,a34,a35,a36,a37,a38,a39,a40,a41,a42,a43,a44,a45,a46,a47,a48,a49,a50,a51,a52;
+wire m1,m2,m3,m4,m5,m6,m7,m8;
+
+wire [5:0] p0 = a&{6{b[0]}};
+wire [5:0] p1 = a&{6{b[1]}};
+wire [5:0] p2 = a&{6{b[2]}};
+wire [5:0] p3 = a&{6{b[3]}};
+wire [5:0] p4 = a&{6{b[4]}};
+wire [5:0] p5 = a&{6{b[5]}};
+
+half_adder ha0(p0[1],p1[0],a1,a2);
+full_adder fa0(p0[2],p1[1],p2[0],a3,a4);
+full_adder fa1(p0[3],p1[2],p2[1],a5,a6);
+full_adder fa2(p0[4],p1[3],p2[2],a7,a8);
+full_adder fa3(p0[5],p1[4],p2[3],a9,a10);
+half_adder ha2(p1[5],p2[4],a11,a12);
+
+half_adder ha3(p3[1],p4[0],a13,a14);
+full_adder fa4(p3[2],p4[1],p5[0],a15,a16);
+full_adder fa5(p3[3],p4[2],p5[1],a17,a18);
+full_adder fa6(p3[4],p4[3],p5[2],a19,a20);
+full_adder fa7(p3[5],p4[4],p5[3],a21,a22);
+half_adder ha4(p4[5],p5[4],a23,a24);
+
+half_adder ha5(a3,a2,a25,a26);
+full_adder fa8(a5,a4,p3[0],a27,a28);
+full_adder fa9(a7,a6,a13,a29,a30);
+full_adder fa10(a9,a8,a15,a31,a32);
+full_adder fa11(a11,a10,a17,a33,a34);
+full_adder fa12(p2[5],a12,a19,a35,a36);
+
+
+half_adder ha6(a27,a26,a37,a38);
+half_adder ha7(a29,a28,a39,a40);
+full_adder fa13(a31,a30,a14,a41,a42);
+full_adder fa14(a33,a32,a16,a43,a44);
+full_adder fa15(a35,a34,a18,a45,a46);
+full_adder fa16(a21,a36,a20,a47,a48);
+half_adder ha8(a23,a22,a49,a50);
+half_adder ha9(p5[5],a24,a51,a52);
+
+assign product[0] = p0[0];
+assign product[1] = a1;
+assign product[2] = a25;
+assign product[3] = a37;
+half_adder ha10(a38,a39,product[4],m1);
+full_adder fa17(a40,a41,m1,product[5],m2);
+full_adder fa18(a42,a43,m2,product[6],m3);
+full_adder fa19(a44,a45,m3,product[7],m4);
+full_adder fa20(a46,a47,m4,product[8],m5);
+full_adder fa21(a48,a49,m5,product[9],m6);
+full_adder fa22(a51,a50,m6,product[10],m7);
+half_adder ha11(a52,m7,product[11],m8);
+
+endmodule
+
+
